@@ -3,6 +3,7 @@ require "rails_helper"
 def createBaseUser
   User.create(
     name: "Test",
+    username: "TestUsername",
     email: "test@test.com",
     password: "password1",
   )
@@ -10,7 +11,7 @@ end
 
 RSpec.describe User, type: :model do
 
-  it "creates a User with name, email and password" do
+  it "creates a User with name, username, email and password" do
     user = createBaseUser
     expect(User.first).to eq(user);
   end
