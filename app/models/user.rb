@@ -8,12 +8,12 @@ class User < ApplicationRecord
 
   has_secure_password
 
-  validates :name, :username, :email, :password {
+  validates :name, :username, :email, :password, {
     presence: true
   }
 
   validates :name, {
-    length: { in: 2..50 }
+    format: /^(?=.{2,20}$)([A-Za-zÀ-ÖØ-öø-ÿ]+[- ']?[A-Za-zÀ-ÖØ-öø-ÿ]+)+{,50}$/
   }
 
 end
