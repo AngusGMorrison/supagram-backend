@@ -13,7 +13,8 @@ class User < ApplicationRecord
   }
 
   validates :name, {
-    format: /^(?=.{2,20}$)([A-Za-zÀ-ÖØ-öø-ÿ]+[- ']?[A-Za-zÀ-ÖØ-öø-ÿ]+)+{,50}$/
+    format: /\A(?=.{2,50}$)([A-Za-zÀ-ÖØ-öø-ÿ]+[- ']?[A-Za-zÀ-ÖØ-öø-ÿ]+)+{,50}\z/
   }
+
 
 end
