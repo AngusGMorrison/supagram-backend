@@ -1,4 +1,4 @@
-Rspec.configure do |config|
+RSpec.configure do |config|
 
   config.before(:all) do
     DatabaseCleaner.clean_with :truncation, except: ["ar_internal_metadata"]
