@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   def sign_in
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
-      renderAuthenaticationSuccess(user)
+      render_authentication_success(user)
     else
       render json: { error: "Invalid username or password" }, status: 401
     end
@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   def sign_up
     user = User.create(user_params())
     if user.valid?()
-      renderAuthenaticationSuccess(user)
+      render_authentication_success(user)
     else
       render json: { errors: user.errors }
     end
@@ -22,7 +22,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:name, :username, :email, :password)
   end
 
-  private def renderAuthenticationSuccess(user)
+  private def render_authentication_success(user)
     render json: { 
       token: issue_token(user.id),
       user: {
