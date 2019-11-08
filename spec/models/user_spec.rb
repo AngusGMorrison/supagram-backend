@@ -10,7 +10,7 @@ RSpec.describe User, type: :model do
   let(:default_user) {User.create(name: name, username: username, email: email, password: password)}
 
   it "creates a User with name, username, email and password" do
-    user = default_user
+    user = UserFactory.create()
     expect(User.first).to eq(user);
   end
 
