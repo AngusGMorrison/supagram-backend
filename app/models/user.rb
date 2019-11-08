@@ -64,7 +64,7 @@ class User < ApplicationRecord
     self.followers.length
   end
 
-  def getFollowingCount
+  def getFollowedCount
     self.followed.length
   end
 
