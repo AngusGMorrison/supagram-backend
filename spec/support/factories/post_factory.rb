@@ -1,26 +1,21 @@
-require "./UserFactory"
+require "rails_helper"
 
 class PostFactory
 
-  USER = UserFactory.create
-  CAPTION = Faker::String.random(length: 20..120)
+  CAPTION = Faker::Lorem.sentence(word_count: 20)
+  IMAGE_PATH = "#{::Rails.root}/storage/defaults/default_post_image.png"
+  IMAGE = {
+    io: File.open(IMAGE_PATH),
+    filename: "default_post_image.png",
+    content_type: "image/png"
+  }
 
-  private def self.create(user_id: USER.id, caption: CAPTION, image: self.createImage())
+  def self.create(user_id: UserFactory.create().id, caption: CAPTION, image: IMAGE)
     Post.create(
       user_id: user_id,
       caption: caption,
       image: image
     )
   end
-
-  private def self.createImage
-    image_path = "#{::Rails.root}/storage/defaults/default_post_image.png"
-    return { 
-      io: File.open(image_path),
-      filename: "default_post_image.png",
-      content_type: "image/png"
-    }
-  end
-
 
 end
