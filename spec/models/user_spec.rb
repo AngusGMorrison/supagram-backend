@@ -152,7 +152,7 @@ RSpec.describe User, type: :model do
   it "can have only one attached avatar" do
   end
 
-  it "is created with a default avatar" do
+  it "destroys dependent Follows when it is destroyed" do
   end
 
 end
