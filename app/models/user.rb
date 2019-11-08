@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include ValidationRegexps
 
   has_one_attached :avatar
   has_many :follows_as_followed, foreign_key: :followed_id, class_name: :Follow, dependent: :destroy
@@ -13,8 +14,23 @@ class User < ApplicationRecord
   }
 
   validates :name, {
-    format: /\A(?=.{2,50}$)([A-Za-zÀ-ÖØ-öø-ÿ]+[- ']?[A-Za-zÀ-ÖØ-öø-ÿ]+)+{,50}\z/
+    format: NAME_REGEX
   }
+
+  validates :username, {
+    uniqueness: true,
+    format: USERNAME_REGEX
+  }
+
+  before_save :format_name
+
+  private def format_name
+    lowercase_name = self.name.downcase()
+    capitalized_words = lowercase_name.split(" ").map() do |word|
+      word.capitalize()
+    end
+    self.name = capitalized_words.join(" ")
+  end
 
 
 end
