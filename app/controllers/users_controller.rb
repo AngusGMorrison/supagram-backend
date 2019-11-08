@@ -3,7 +3,15 @@ class UsersController < ApplicationController
   def sign_in
     user = User.find_by(email: params[:email])
     if user && user.authenticate(params[:password])
-      render json: { token: issue_token(user.id) }
+      render json: { 
+        token: issue_token(user.id),
+        user: {
+          username: user.username,
+          post_count: user.getPostCount(),
+          follower_count: user.getFollowerCount(),
+          following_count: user.getFollowingCount()
+        }
+      }
     else
       render json: { error: "Invalid username or password" }, status: 401
     end
