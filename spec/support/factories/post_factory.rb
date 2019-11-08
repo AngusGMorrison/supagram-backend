@@ -3,7 +3,7 @@ require "./UserFactory"
 class PostFactory
 
   USER = UserFactory.create
-  CAPTION = "Test caption"
+  CAPTION = Faker::String.random(length: 20..120)
 
   private def self.create(user_id: USER.id, caption: CAPTION, image: self.createImage())
     Post.create(
