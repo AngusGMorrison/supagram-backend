@@ -10,6 +10,11 @@ class UsersController < ApplicationController
   end
 
   def sign_up
+    user = User.create
+  end
+
+  private def user_params
+    params.permit(:email, :password)
   end
 
 end
