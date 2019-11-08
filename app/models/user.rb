@@ -3,8 +3,8 @@ class User < ApplicationRecord
   include ValidationErrorMessages
 
   has_one_attached :avatar
-  has_many :follows_as_followed, foreign_key: :followed_id, class_name: :Follow, dependent: :destroy
-  has_many :follows_as_follower, foreign_key: :follower_id, class_name: :Follow, dependent: :destroy
+  has_many :followers, foreign_key: :followed_id, class_name: :Follow, dependent: :destroy
+  has_many :followed, foreign_key: :follower_id, class_name: :Follow, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
 
@@ -55,6 +55,5 @@ class User < ApplicationRecord
     avatar_path = "#{::Rails.root}/storage/defaults/default_avatar.png"
     self.avatar.attach(io: File.open(avatar_path), filename: "default_avatar.png", content_type: "image/png")
   end
-
 
 end
