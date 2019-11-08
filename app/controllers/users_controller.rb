@@ -10,7 +10,12 @@ class UsersController < ApplicationController
   end
 
   def sign_up
-    user = User.create
+    user = User.create(user_params())
+    if user.valid?()
+      render json: { token: issue_token(user.id) }
+    else
+      render json: { errors: user.errors }
+    end
   end
 
   private def user_params
