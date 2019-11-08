@@ -155,4 +155,7 @@ RSpec.describe User, type: :model do
   it "destroys dependent Follows when it is destroyed" do
   end
 
+  it "destroys dependent Likes when it is destroyed" do
+  end
+
 end
