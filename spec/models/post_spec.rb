@@ -27,7 +27,7 @@ RSpec.describe Post, type: :model do
   it "must have a User id" do
   end
 
-  it "must have content" do
+  it "must have a caption" do
   end
 
   it "must have an image" do
