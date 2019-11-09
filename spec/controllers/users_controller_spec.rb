@@ -124,6 +124,66 @@ RSpec.describe UsersController, type: :controller do
       expect(response.parsed_body()["errors"]).to be_truthy()
     end
 
+    it "rejects requests without a name" do
+      post(
+        :sign_up,
+        params: {
+          user: {
+            username: Faker::Internet.username(specifier: 4..30),
+            email: Faker::Internet.email,
+            password: password
+          }
+        },
+        format: :json
+      )
+      expect(response.status).to eq(400)
+    end
+
+    it "rejects requests without a username" do
+      post(
+        :sign_up,
+        params: {
+          user: {
+            name: name,
+            email: Faker::Internet.email,
+            password: password
+          }
+        },
+        format: :json
+      )
+      expect(response.status).to eq(400)
+    end
+
+    it "rejects requests without an email" do
+      post(
+        :sign_up,
+        params: {
+          user: {
+            name: name,
+            username: Faker::Internet.username(specifier: 4..30),
+            password: password
+          }
+        },
+        format: :json
+      )
+      expect(response.status).to eq(400)
+    end
+
+    it "rejects requests without a password" do
+      post(
+        :sign_up,
+        params: {
+          user: {
+            name: name,
+            username: Faker::Internet.username(specifier: 4..30),
+            email: Faker::Internet.email
+          }
+        },
+        format: :json
+      )
+      expect(response.status).to eq(400)
+    end
+
     it "responds to successful requests with code 200" do
       request_sign_up
       expect(response.status).to eq(200)
