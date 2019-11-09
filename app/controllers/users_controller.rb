@@ -27,9 +27,9 @@ class UsersController < ApplicationController
       token: issue_token(user.id),
       user: {
         username: user.username,
-        post_count: user.getPostCount(),
-        follower_count: user.getFollowerCount(),
-        followed_count: user.getFollowedCount()
+        post_count: user.get_post_count(),
+        follower_count: user.get_follower_count(),
+        followed_count: user.get_followed_count()
       }
     }
   end
