@@ -2,7 +2,11 @@ require "rails_helper"
 
 class PostFactory
 
-  def create(user_id: UserFactory.create().id, caption: createCaption(), image: getImage())
+  def initialize
+    @user_factory = UserFactory.new
+  end
+
+  def create(user_id: @user_factory.create().id, caption: createCaption(), image: getImage())
     Post.create(
       user_id: user_id,
       caption: caption,
@@ -17,14 +21,14 @@ class PostFactory
     )
   end
 
-  def create_without_caption(user_id: UserFactory.create().id, image: getImage())
+  def create_without_caption(user_id: @user_factory.create().id, image: getImage())
     Post.create(
       user_id: user_id,
       image: image
     )
   end
 
-  def create_without_image(user_id: UserFactory.create().id, caption: createCaption())
+  def create_without_image(user_id: @user_factory.create().id, caption: createCaption())
     Post.create(
       user_id: user_id,
       caption: caption
