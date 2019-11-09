@@ -114,4 +114,7 @@ RSpec.describe User, type: :model do
   it "destroys dependent Likes when it is destroyed" do
   end
 
+  it "returns an array of posts it has liked" do
+  end
+
 end

@@ -3,24 +3,10 @@ require "rails_helper"
 RSpec.describe Like, type: :model do
 
   before(:all) do
-    image_path = "#{::Rails.root}/storage/defaults/default_post_image.png"
-    image = { 
-      io: File.open(image_path),
-      filename: "default_post_image.png",
-      content_type: "image/png"
-    }
-
-    User.create(
-      name: "User",
-      username: "User1",
-      email: "test1@test.com",
-      password: "password1^"
-    )
-    Post.create(
-      user_id: User.first.id,
-      caption: "Test content",
-      image: image
-    )
+    user_factory = UserFactory.new()
+    user = user_factory.create()
+    post_factory = PostFactory.new()
+    post = post_factory.create()
   end
 
   it "creates a like with a User id and Post id" do
