@@ -5,7 +5,7 @@ class UsersController < ApplicationController
     if user && user.authenticate(params[:password])
       render_authentication_success(user)
     else
-      render json: { error: "Invalid username or password" }, status: 401
+      render json: { errors: "Invalid username or password" }, status: 401
     end
   end
 
@@ -14,7 +14,7 @@ class UsersController < ApplicationController
     if user.valid?()
       render_authentication_success(user)
     else
-      render json: { errors: user.errors }
+      render json: { errors: user.errors }, status: 400
     end
   end
 

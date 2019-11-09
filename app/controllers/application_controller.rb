@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
 
   rescue_from ActionController::ParameterMissing do |exception|
-    render json: { error: "Bad request"}, status: 400
+    render json: { errors: "Parameter missing" }, status: 400
   end
 
   def issue_token(data)
