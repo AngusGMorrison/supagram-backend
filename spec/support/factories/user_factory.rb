@@ -1,8 +1,12 @@
+require "rails_helper"
+
 class UserFactory
 
-  PASSWORD = "password1^"
+  def initialize
+    @password = TestConstants::PASSWORD
+  end
 
-  def create(name: create_first_name(), username: create_username(), email: create_email(), password: PASSWORD)
+  def create(name: create_first_name(), username: create_username(), email: create_email(), password: @password)
     User.create(
       name: name,
       username: username,
@@ -11,7 +15,7 @@ class UserFactory
     )
   end
 
-  def create_without_name(username: create_username(), email: create_email(), password: PASSWORD)
+  def create_without_name(username: create_username(), email: create_email(), password: @password)
     User.create(
       username: username,
       email: email,
@@ -19,7 +23,7 @@ class UserFactory
     )
   end
 
-  def create_without_username(name: create_first_name(), email: create_email(), password: PASSWORD)
+  def create_without_username(name: create_first_name(), email: create_email(), password: @password)
     User.create(
       name: name,
       email: email,
