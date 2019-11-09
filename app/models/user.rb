@@ -58,7 +58,7 @@ class User < ApplicationRecord
 
   def get_post_count
     self.posts.length
-  en_c
+  end
 
   def get_follower_count
     self.followers.length
