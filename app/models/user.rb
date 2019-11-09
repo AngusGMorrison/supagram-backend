@@ -56,15 +56,15 @@ class User < ApplicationRecord
     self.avatar.attach(io: File.open(avatar_path), filename: "default_avatar.png", content_type: "image/png")
   end
 
-  def getPostCount
+  def get_post_count
     self.posts.length
   end
 
-  def getFollowerCount
+  def get_follower_count
     self.followers.length
   end
 
-  def getFollowedCount
+  def get_followed_count
     self.followed.length
   end
 
