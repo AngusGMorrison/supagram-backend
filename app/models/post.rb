@@ -5,7 +5,7 @@ class Post < ApplicationRecord
   belongs_to :user
   has_many :likes, dependent: :destroy
 
-  validates :caption, :image, {
+  validates :image, {
     presence: true
   }
   
