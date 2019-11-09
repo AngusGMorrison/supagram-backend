@@ -1,17 +1,42 @@
 class UserFactory
 
-  NAME = Faker::Name.first_name
-  USERNAME = Faker::Internet.username(specifier: 4..30)
-  EMAIL = Faker::Internet.email
   PASSWORD = "password1^"
 
-  def self.create(name: NAME, username: USERNAME, email: EMAIL, password: PASSWORD)
+  def create(name: create_first_name(), username: create_username(), email: create_email(), password: PASSWORD)
     User.create(
       name: name,
       username: username,
       email: email,
       password: password
     )
+  end
+
+  def create_without_name(username: create_username(), email: create_email(), password: PASSWORD)
+    User.create(
+      username: username,
+      email: email,
+      password: password
+    )
+  end
+
+  def create_without_username(name: create_first_name(), email: create_email(), password: PASSWORD)
+    User.create(
+      name: name,
+      email: email,
+      password: password
+    )
+  end
+
+  private def create_first_name
+    Faker::Name.first_name
+  end
+
+  private def create_username
+    Faker::Internet.username(specifier: 4..30)
+  end
+
+  private def create_email
+    Faker::Internet.email
   end
 
 end
