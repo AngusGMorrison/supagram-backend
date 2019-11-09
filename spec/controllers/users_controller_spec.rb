@@ -1,5 +1,4 @@
 require "rails_helper"
-# require "jwt"
 
 RSpec.describe UsersController, type: :controller do
 
