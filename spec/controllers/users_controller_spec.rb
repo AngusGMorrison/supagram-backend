@@ -54,7 +54,7 @@ RSpec.describe UsersController, type: :controller do
     end
 
     it "generates a token from the User's id on successful sign-in" do
-      token = JWT.encode(User.last.id, TestConstants::SECRET_KEY)
+      token = JWT.encode({ user_id: User.last.id }, TestConstants::SECRET_KEY)
       request_sign_in
       response_token = response.parsed_body()["token"]
       expect(response_token).to eq(token)
@@ -196,7 +196,7 @@ RSpec.describe UsersController, type: :controller do
 
     it "generates a token from the User's id on successful sign-up" do
       request_sign_up
-      token = JWT.encode(User.last.id, TestConstants::SECRET_KEY)
+      token = JWT.encode({ user_id: User.last.id }, TestConstants::SECRET_KEY)
       response_token = response.parsed_body()["token"]
       expect(response_token).to eq(token)
     end
