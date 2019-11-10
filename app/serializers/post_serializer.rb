@@ -12,7 +12,7 @@ class PostSerializer
         username: @post.user.username,
         image_url: get_image_url(),
         caption: @post.caption,
-        # most_recent_likes: post.get_most_recent_likes(),
+        most_recent_likes: post.get_most_recent_likes(),
         like_count: @post.likes.length
         # created_at: post.created_at
       }

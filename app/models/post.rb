@@ -8,5 +8,9 @@ class Post < ApplicationRecord
   validates :image, {
     presence: true
   }
+
+  def get_most_recent_likes
+    self.likes.order("created_at DESC").limit(LIKES_LIMIT)
+  end
   
 end
