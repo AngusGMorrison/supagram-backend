@@ -12,9 +12,9 @@ class PostSerializer
         username: @post.user.username,
         image_url: get_image_url(),
         caption: @post.caption,
-        most_recent_likes: post.get_most_recent_likes(),
-        like_count: @post.likes.length
-        # created_at: post.created_at
+        most_recent_likes: @post.get_most_recent_likes(),
+        like_count: @post.likes.length,
+        created_at: @post.created_at
       }
     }.to_json()
   end
