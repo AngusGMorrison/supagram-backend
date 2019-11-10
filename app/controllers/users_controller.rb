@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   end
 
   private def render_authentication_success(user)
-    render json: { 
+    render json: {
       token: issue_token({ user_id: user.id }),
       user: {
         username: user.username,
