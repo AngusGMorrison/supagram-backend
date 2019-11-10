@@ -12,9 +12,9 @@ class PostsController < ApplicationController
   private def create_post_and_respond
     params[:user_id] = @user.id
     post = Post.create(post_params())
-    image_url = url_for(post.image)
     if post.valid?
-      render PostSerializer.serialize(post, image_url)
+      post_serializer = PostSerializer.new(post)
+      render json: post_serializer.serialize
     else
       render json: { errors: post.errors }, status: 400
     end
