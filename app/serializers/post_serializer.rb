@@ -1,7 +1,7 @@
 class PostSerializer
 
   def self.serialize(post)
-    return {
+    post =  {
       post: {
         user_id: post.user.id,
         username: post.user.username,
@@ -11,7 +11,8 @@ class PostSerializer
         like_count: post.likes.length
         created_at: post.created_at
       }
-    }.to_json()
+    }
+    post.to_json()
   end
 
 end
