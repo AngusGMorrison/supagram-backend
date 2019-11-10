@@ -1,0 +1,1 @@
+LIKES_LIMIT = 3
