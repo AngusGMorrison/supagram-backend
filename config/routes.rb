@@ -3,5 +3,7 @@ Rails.application.routes.draw do
   post "/sign-in", to: "users#sign_in", as: "sign_in"
   post "/sign-up", to: "users#sign_up", as: "sign_up"
 
-  post "/posts/create", to: "posts#create", as: "create_post"
+  post "/posts", to: "posts#create", as: "create_post"
+  post "/posts/:id", to: "posts#like", as: "like_post"
+
 end
