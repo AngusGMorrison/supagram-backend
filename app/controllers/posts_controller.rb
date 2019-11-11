@@ -1,28 +1,51 @@
 class PostsController < ApplicationController
 
-  def create
-    @user = get_current_user()
-    if @user
-      create_post_and_respond()
-    else
-      render json: { errors: "User not authorized" }, status: 404
+  unless Rails.env.development?()
+    rescue_from SupagramErrors::PostNotFound do |error|
+      render json: { errors: error.message }, status: error.http_status
     end
   end
 
-  # def like
-  #   @user = get_current_user()
-  #   if @user
-  #     create_like
-  # end
+  def create
+    user = get_current_user()
+    params[:user_id] = user.id
 
-  private def create_post_and_respond
-    params[:user_id] = @user.id
     post = Post.create(post_params())
+    respond_to_post(post, user)
+  end
+
+  private def respond_to_post(post, user)
     if post.valid?()
-      post_serializer = PostSerializer.new(post, @user)
-      render json: post_serializer.serialize()
+      post_serializer = PostSerializer.new(post)
+      render json: post_serializer.serialize_new_post(user)
     else
       render json: { errors: post.errors }, status: 400
+    end
+  end
+
+  def like
+    user = get_current_user()
+    post = get_post_to_like()
+    params[:user_id] = user.id
+
+    like = Like.create(like_params())
+    respond_to_like(like, post)
+  end
+
+  private def get_post_to_like
+    begin
+      Post.find(params[:post_id])
+    rescue ActiveRecord::RecordNotFound
+      raise SupagramErrors::PostNotFound
+    end
+  end
+
+  private def respond_to_like(like, post)
+    if like.valid?()
+      post_serializer = PostSerializer.new(post)
+      render json: post_serializer.serialize_new_like()
+    else
+      render json: { erros: like.errors }, status: 400
     end
   end
 
@@ -33,5 +56,7 @@ class PostsController < ApplicationController
   private def like_params
     params.permit(:user_id, :post_id)
   end
+
+ 
 
 end
