@@ -16,20 +16,20 @@ class PostsController < ApplicationController
 
   private def respond_to_post(post, user)
     if post.valid?()
-      post_serializer = PostSerializer.new(post)
-      render json: post_serializer.serialize_new_post(user)
+      post_serializer = PostSerializer.new(post, user)
+      render json: post_serializer.serialize_new_post()
     else
       render json: { errors: post.errors }, status: 400
     end
   end
 
   def like
-    user = get_current_user()
-    post = get_post_to_like()
-    params[:user_id] = user.id
+    @user = get_current_user()
+    @post = get_post_to_like()
+    params[:user_id] = @user.id
 
-    like = Like.create(like_params())
-    respond_to_like(like, post)
+    @like = Like.create(like_params())
+    respond_to_like()
   end
 
   private def get_post_to_like
@@ -40,9 +40,9 @@ class PostsController < ApplicationController
     end
   end
 
-  private def respond_to_like(like, post)
-    if like.valid?()
-      post_serializer = PostSerializer.new(post)
+  private def respond_to_like()
+    if @like.valid?()
+      post_serializer = PostSerializer.new(@post, @user)
       render json: post_serializer.serialize_new_like()
     else
       render json: { errors: like.errors }, status: 400
