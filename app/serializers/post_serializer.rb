@@ -1,8 +1,9 @@
 class PostSerializer
   include Rails.application.routes.url_helpers
 
-  def initialize(post)
+  def initialize(post, user)
     @post = post
+    @user = user
   end
 
   def serialize
@@ -15,6 +16,9 @@ class PostSerializer
         most_recent_likes: @post.get_most_recent_likes(),
         like_count: @post.likes.length,
         created_at: @post.created_at
+      },
+      user: {
+        post_count: @user.get_post_count()
       }
     }.to_json()
   end
