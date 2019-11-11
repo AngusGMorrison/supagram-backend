@@ -23,16 +23,11 @@ class PostSerializer
     }.to_json()
   end
 
-  def serialize_new_like
+  def serialize_new_like()
     {
       post: {
-        creator_id: @post.user.id,
-        username: @post.user.username,
-        image_url: get_image_url(),
-        caption: @post.caption,
-        most_recent_likes: @post.get_most_recent_likes(),
-        like_count: @post.likes.length,
-        created_at: @post.created_at
+        id: @post_id,
+        like_count: @post.likes.length
       }
     }.to_json()
   end

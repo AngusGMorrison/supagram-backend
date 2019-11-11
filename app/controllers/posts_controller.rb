@@ -45,7 +45,7 @@ class PostsController < ApplicationController
       post_serializer = PostSerializer.new(post)
       render json: post_serializer.serialize_new_like()
     else
-      render json: { erros: like.errors }, status: 400
+      render json: { errors: like.errors }, status: 400
     end
   end
 
