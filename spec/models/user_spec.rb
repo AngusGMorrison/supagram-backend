@@ -70,34 +70,34 @@ RSpec.describe User, type: :model do
     expect(user2.valid?()).to be(false)
   end
 
-  it "must have a username that starts with a letter, number or _" do
+  xit "must have a username that starts with a letter, number or _" do
   end
 
-  it "must have a username that ends with a letter, number or _" do
+  xit "must have a username that ends with a letter, number or _" do
   end
 
-  it "must not have a username with two consecutive . " do
+  xit "must not have a username with two consecutive . " do
   end
 
-  it "must not contain special characters other than . and _" do
+  xit "must not contain special characters other than . and _" do
   end
 
-  it "cannot be created without an email" do
+  xit "cannot be created without an email" do
   end
 
-  it "must have a unique email" do
+  xit "must have a unique email" do
   end
 
-  it "cannot be created without a password" do
+  xit "cannot be created without a password" do
   end
 
-  it "must have a password of at least 8 characters" do
+  xit "must have a password of at least 8 characters" do
   end
 
-  it "must have a password with at least 1 special character" do
+  xit "must have a password with at least 1 special character" do
   end
 
-  it "must have a password with at least 1 number" do
+  xit "must have a password with at least 1 number" do
   end
 
   it "is created with a default avatar" do
@@ -105,16 +105,16 @@ RSpec.describe User, type: :model do
     expect(user.avatar.attached?()).to be(true)
   end
 
-  it "can have only one attached avatar" do
+  xit "can have only one attached avatar" do
   end
 
-  it "destroys dependent Follows when it is destroyed" do
+  xit "destroys dependent Follows when it is destroyed" do
   end
 
-  it "destroys dependent Likes when it is destroyed" do
+  xit "destroys dependent Likes when it is destroyed" do
   end
 
-  it "returns an array of posts it has liked" do
+  xit "returns an array of posts it has liked" do
   end
 
 end

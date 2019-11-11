@@ -18,7 +18,7 @@ class ApplicationController < ActionController::API
     JWT.decode(token, get_secret()).first
   end
 
-  def get_secret
+  private def get_secret
     ENV["SUPAGRAM_JWT_KEY"]
   end
 

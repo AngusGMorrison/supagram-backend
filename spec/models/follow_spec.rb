@@ -41,7 +41,7 @@ RSpec.describe Follow, type: :model do
     expect(User.second.followed.length).to eq(2)
   end
 
-  it "prevents duplicates" do
+  xit "prevents duplicates" do
   end
 
 end

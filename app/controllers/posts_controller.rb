@@ -18,7 +18,7 @@ class PostsController < ApplicationController
   private def create_post_and_respond
     params[:user_id] = @user.id
     post = Post.create(post_params())
-    if post.valid?
+    if post.valid?()
       post_serializer = PostSerializer.new(post, @user)
       render json: post_serializer.serialize()
     else
