@@ -8,7 +8,7 @@ class PostSerializer
   def serialize_new_post(user)
     {
       post: {
-        post_id: @post.id
+        post_id: @post.id,
         creator_id: @post.user.id,
         username: @post.user.username,
         image_url: get_image_url(),
