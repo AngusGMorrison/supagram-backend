@@ -25,7 +25,7 @@ class PostSerializer
     }.to_json()
   end
 
-  def serialize_new_like()
+  def serialize_likes()
     {
       post: {
         id: @post_id,
