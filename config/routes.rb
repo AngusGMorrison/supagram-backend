@@ -4,6 +4,6 @@ Rails.application.routes.draw do
   post "/sign-up", to: "users#sign_up", as: "sign_up"
 
   post "/posts", to: "posts#create", as: "create_post"
-  post "/posts/:id", to: "posts#like", as: "like_post"
+  post "/posts/:post_id", to: "posts#like", as: "like_post"
 
 end
