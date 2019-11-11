@@ -29,10 +29,10 @@ RSpec.describe Post, type: :model do
     expect(post.image.attached?()).to be(true)
   end
 
-  it "destroys dependent Likes when it is destroyed" do
+  xit "destroys dependent Likes when it is destroyed" do
   end
 
-  it "returns an array of Users who have liked it" do
+  xit "returns an array of Users who have liked it" do
   end
 
 end

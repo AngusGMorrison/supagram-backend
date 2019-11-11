@@ -1,20 +1,20 @@
 class UsersController < ApplicationController
 
   def sign_in
-    user = User.find_by(email: params[:email])
-    if user && user.authenticate(params[:password])
-      render_authentication_success(user)
+    @user = User.find_by(email: params[:email])
+    if @user && @user.authenticate(params[:password])
+      respond_with_token_and_user()
     else
       render json: { errors: "Invalid username or password" }, status: 401
     end
   end
 
   def sign_up
-    user = User.create(user_params())
-    if user.valid?()
-      render_authentication_success(user)
+    @user = User.create(user_params())
+    if @user.valid?()
+      respond_with_token_and_user()
     else
-      render json: { errors: user.errors }, status: 400
+      render json: { errors: @user.errors }, status: 400
     end
   end
 
@@ -22,16 +22,10 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :username, :email, :password)
   end
 
-  private def render_authentication_success(user)
-    render json: {
-      token: issue_token({ user_id: user.id }),
-      user: {
-        username: user.username,
-        post_count: user.get_post_count(),
-        follower_count: user.get_follower_count(),
-        followed_count: user.get_followed_count()
-      }
-    }
+  private def respond_with_token_and_user()
+    token = issue_token({ user_id: @user.id })
+    user_serializer = UserSerializer.new(@user, token)
+    render json: user_serializer.serialize()
   end
 
 end
