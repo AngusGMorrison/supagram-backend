@@ -10,14 +10,17 @@ class PostSerializer
     {
       post: {
         id: @post.id,
-        creator_id: @post.user.id,
-        username: @post.user.username,
         image_url: @post.get_image_url,
         caption: @post.caption,
         most_recent_likes: @post.get_most_recent_likes(),
         like_count: @post.likes.length,
         created_at: @post.created_at,
         liked_by_user: @post.liked_by?(@user)
+        author: {
+          author_id: @post.user.id,
+          username: @post.user.username,
+          followed_by_user: @post.user.followed_by?(@user)
+        }
       },
       user: {
         post_count: @user.get_post_count()
