@@ -14,7 +14,7 @@ class FollowsController < ApplicationController
   private def respond_to_follow
     if @follow.valid?()
       follow_serializer = FollowSerializer.new(@follow)
-      render json: follow_serializer.serialize(), status: 200
+      render json: follow_serializer.serialize_follow(), status: 200
     else
       render json: { errors: @follow.errors }, status: 400
     end
