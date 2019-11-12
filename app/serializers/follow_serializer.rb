@@ -6,7 +6,7 @@ class FollowSerializer
 
   def serialize_follow
     {
-      followed_user: {
+      user: {
         id: @follow.followed_id,
         username: @follow.followed.username,
         followed_by_current_user: true
@@ -16,7 +16,7 @@ class FollowSerializer
 
   def serialize_unfollow
     {
-      unfollowed_user: {
+      user: {
         id: @follow.followed_id,
         username: @follow.followed.username,
         followed_by_current_user: false
