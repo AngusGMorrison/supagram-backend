@@ -35,4 +35,7 @@ class PostSerializer
     }.to_json()
   end
 
+  def serialize_feed_post
+  end
+
 end
