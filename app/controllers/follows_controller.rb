@@ -1,4 +1,4 @@
-class FollowController < ApplicationController
+class FollowsController < ApplicationController
 
   def create
     user = get_current_user()
