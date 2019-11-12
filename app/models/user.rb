@@ -3,8 +3,11 @@ class User < ApplicationRecord
   include ValidationErrorMessages
 
   has_one_attached :avatar
-  has_many :followers, foreign_key: :followed_id, class_name: :Follow, dependent: :destroy
-  has_many :followed, foreign_key: :follower_id, class_name: :Follow, dependent: :destroy
+  has_many :follows_as_follower, foreign_key: :follower_id, class_name: :Follow, dependent: :destroy
+  has_many :follows_as_followed, foreign_key: :followed_id, class_name: :Follow, dependent: :destroy
+  has_many :followed, through: :follows_as_follower, class_name: :User
+  has_many :followers, through: :follows_as_followed, class_name: :User
+
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
 
@@ -66,6 +69,10 @@ class User < ApplicationRecord
 
   def get_followed_count
     self.followed.length
+  end
+
+  def followed_by?(user)
+    self.followers.include?(user)
   end
 
 end

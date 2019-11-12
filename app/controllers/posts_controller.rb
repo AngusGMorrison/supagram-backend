@@ -69,8 +69,6 @@ class PostsController < ApplicationController
     post_serializer = PostSerializer.new(@post, @user)
     render json: post_serializer.serialize_likes()
   end
-
-
  
 
 end
