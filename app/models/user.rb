@@ -68,7 +68,7 @@ class User < ApplicationRecord
     self.followed.length
   end
 
-  def followed_by(user)
+  def followed_by?(user)
     self.followers.include?(user)
   end
 
