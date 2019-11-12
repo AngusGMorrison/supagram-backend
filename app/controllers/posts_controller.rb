@@ -14,6 +14,10 @@ class PostsController < ApplicationController
     respond_to_post(post, user)
   end
 
+  private def post_params
+    params.permit(:user_id, :caption, :image)
+  end
+
   private def respond_to_post(post, user)
     if post.valid?()
       post_serializer = PostSerializer.new(post, user)
@@ -30,6 +34,10 @@ class PostsController < ApplicationController
 
     @like = Like.create(like_params())
     respond_to_like()
+  end
+
+  private def like_params
+    params.permit(:user_id, :post_id)
   end
 
   private def respond_to_like()
@@ -62,13 +70,6 @@ class PostsController < ApplicationController
     render json: post_serializer.serialize_likes()
   end
 
-  private def post_params
-    params.permit(:user_id, :caption, :image)
-  end
-
-  private def like_params
-    params.permit(:user_id, :post_id)
-  end
 
  
 
