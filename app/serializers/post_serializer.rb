@@ -17,7 +17,7 @@ class PostSerializer
         created_at: @post.created_at,
         liked_by_current_user: @post.liked_by?(@user),
         author: {
-          author_id: @post.user.id,
+          id: @post.user.id,
           username: @post.user.username,
           followed_by_current_user: @post.user.followed_by?(@user)
         }
