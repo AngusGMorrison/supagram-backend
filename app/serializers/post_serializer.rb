@@ -35,8 +35,4 @@ class PostSerializer
     }.to_json()
   end
 
-  private def get_image_url
-    url_for(@post.image)
-  end
-
 end
