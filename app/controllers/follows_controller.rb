@@ -1,5 +1,11 @@
 class FollowsController < ApplicationController
 
+  unless Rails.env.development?()
+    rescue_from SupagramErrors::UnfollowSelf do |error|
+      render json: { errors: error.message }, status: error.http_status
+    end
+  end
+
   def create
     @user = get_current_user()
     params[:follow][:follower_id] = @user.id
@@ -22,6 +28,8 @@ class FollowsController < ApplicationController
 
   def destroy
     @user = get_current_user()
+    if @user.id == params[:follow][:followed_id]
+      raise SupagramErrors::UnfollowSelf
     @follow = Follow.find_by(follower_id: @user.id, followed_id: params[:follow][:followed_id])
     respond_to_destroy_follow()
   end
