@@ -5,5 +5,6 @@ Rails.application.routes.draw do
 
   post "/posts", to: "posts#create", as: "create_post"
   post "/posts/:post_id", to: "posts#like", as: "like_post"
+  delete "/posts/:post_id", to: "posts#unlike", as: "unlike_post"
 
 end
