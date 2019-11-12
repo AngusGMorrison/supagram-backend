@@ -117,4 +117,10 @@ RSpec.describe User, type: :model do
   xit "returns an array of posts it has liked" do
   end
 
+  it "follows itself on creation" do
+    user = user_factory.create()
+    follow = Follow.last
+    expect(follow.follower_id).to eq(user.id).and eq(follow.followed_id)
+  end
+
 end

@@ -20,4 +20,14 @@ module SupagramErrors
     end
   end
 
+  class UnfollowSelf < StandardError
+    def message
+      "User cannot unfollow themselves"
+    end
+
+    def http_status
+      400
+    end
+  end
+
 end

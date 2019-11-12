@@ -3,13 +3,15 @@ class User < ApplicationRecord
   include ValidationErrorMessages
 
   has_one_attached :avatar
+
+  has_many :posts, dependent: :destroy
+  has_many :likes, dependent: :destroy
+
   has_many :follows_as_follower, foreign_key: :follower_id, class_name: :Follow, dependent: :destroy
   has_many :follows_as_followed, foreign_key: :followed_id, class_name: :Follow, dependent: :destroy
   has_many :followed, through: :follows_as_follower, class_name: :User
   has_many :followers, through: :follows_as_followed, class_name: :User
-
-  has_many :posts, dependent: :destroy
-  has_many :likes, dependent: :destroy
+  has_many :followed_posts, through: :followed, source: :posts
 
   has_secure_password
 
@@ -44,7 +46,7 @@ class User < ApplicationRecord
   }
 
   before_save :format_name
-  after_create :attach_default_avatar
+  after_create :attach_default_avatar, :follow_self
 
   private def format_name
     lowercase_name = self.name.downcase()
@@ -57,6 +59,10 @@ class User < ApplicationRecord
   private def attach_default_avatar
     avatar_path = "#{::Rails.root}/storage/defaults/default_avatar.png"
     self.avatar.attach(io: File.open(avatar_path), filename: "default_avatar.png", content_type: "image/png")
+  end
+
+  private def follow_self
+    Follow.create(follower_id: self.id, followed_id: self.id)
   end
 
   def get_post_count

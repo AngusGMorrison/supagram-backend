@@ -32,13 +32,15 @@ RSpec.describe Follow, type: :model do
   it "correctly returns a User's followers" do
     Follow.create(followed_id: User.first.id, follower_id: User.second.id)
     Follow.create(followed_id: User.first.id, follower_id: User.third.id)
-    expect(User.first.followers.length).to eq(2)
+    # Users automatically follow themselves
+    expect(User.first.followers.length).to eq(3)
   end
 
   it "correctly returns a User's followed Users" do
     Follow.create(followed_id: User.first.id, follower_id: User.second.id)
     Follow.create(followed_id: User.third.id, follower_id: User.second.id)
-    expect(User.second.followed.length).to eq(2)
+    # Users automatically follow themselves
+    expect(User.second.followed.length).to eq(3)
   end
 
   xit "prevents duplicates" do
