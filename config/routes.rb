@@ -8,5 +8,6 @@ Rails.application.routes.draw do
   delete "/posts/:post_id", to: "posts#unlike"
 
   post "/follow", to: "follows#create"
+  delete "/follow", to: "follows#destroy"
 
 end
