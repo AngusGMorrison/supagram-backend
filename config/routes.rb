@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   post "/sign-in", to: "users#sign_in"
   post "/sign-up", to: "users#sign_up"
 
+  get "/posts", to: "posts#show_feed"
   post "/posts", to: "posts#create"
   post "/posts/:post_id", to: "posts#like"
   delete "/posts/:post_id", to: "posts#unlike"

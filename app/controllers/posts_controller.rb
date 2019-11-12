@@ -6,21 +6,43 @@ class PostsController < ApplicationController
     end
   end
 
-  def create
-    user = get_current_user()
-    params[:user_id] = user.id
+  def show_feed
+    @user = get_current_user()
+    feed = get_feed()
+    post_serializer = PostSerializer.new(feed: feed, user: @user)
+    render json: post_serializer.serialize_feed(), status: 200
+  end
 
-    post = Post.create(post_params())
-    respond_to_post(post, user)
+  private def get_feed
+    @user.followed_posts
+      .where("posts.created_at < ?", get_feed_start_date())
+      .order(created_at: :desc)
+      .limit(25)
+  end
+
+  private def get_feed_start_date
+    if params[:earliest_date_in_feed]
+      params[:earliest_date_in_feed]
+    else
+      DateTime.now()
+    end
+  end
+
+  def create
+    @user = get_current_user()
+    params[:user_id] = @user.id
+
+    @post = Post.create(post_params())
+    respond_to_post()
   end
 
   private def post_params
     params.permit(:user_id, :caption, :image)
   end
 
-  private def respond_to_post(post, user)
-    if post.valid?()
-      post_serializer = PostSerializer.new(post, user)
+  private def respond_to_post()
+    if @post.valid?()
+      post_serializer = PostSerializer.new(post: @post, user: @user)
       render json: post_serializer.serialize_new_post()
     else
       render json: { errors: post.errors }, status: 400
@@ -42,7 +64,7 @@ class PostsController < ApplicationController
 
   private def respond_to_like()
     if @like.valid?()
-      post_serializer = PostSerializer.new(@post, @user)
+      post_serializer = PostSerializer.new(post: @post, user: @user)
       render json: post_serializer.serialize_likes()
     else
       render json: { errors: like.errors }, status: 400
@@ -66,9 +88,8 @@ class PostsController < ApplicationController
   end
 
   private def respond_to_unlike()
-    post_serializer = PostSerializer.new(@post, @user)
+    post_serializer = PostSerializer.new(post: @post, user: @user)
     render json: post_serializer.serialize_likes()
   end
- 
 
 end
