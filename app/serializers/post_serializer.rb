@@ -15,11 +15,11 @@ class PostSerializer
         most_recent_likes: @post.get_most_recent_likes(),
         like_count: @post.likes.length,
         created_at: @post.created_at,
-        liked_by_user: @post.liked_by?(@user)
+        liked_by_current_user: @post.liked_by?(@user)
         author: {
           author_id: @post.user.id,
           username: @post.user.username,
-          followed_by_user: @post.user.followed_by?(@user)
+          followed_by_current_user: @post.user.followed_by?(@user)
         }
       },
       user: {
@@ -33,7 +33,7 @@ class PostSerializer
       post: {
         id: @post_id,
         like_count: @post.likes.length,
-        liked_by_user: @post.liked_by?(@user)
+        liked_by_current_user: @post.liked_by?(@user)
       }
     }.to_json()
   end
