@@ -4,7 +4,7 @@ class Follow < ApplicationRecord
   belongs_to :followed, class_name: :User
   belongs_to :follower, class_name: :User
 
-  validate :cannot_follow_self
+  # validate :cannot_follow_self
 
   validates :follower, {
     uniqueness: {
@@ -13,10 +13,10 @@ class Follow < ApplicationRecord
     }
   }
 
-  def cannot_follow_self
-    if follower == followed
-      errors.add(:follower, CANNOT_FOLLOW_SELF)
-    end
-  end
+  # def cannot_follow_self
+  #   if follower == followed
+  #     errors.add(:follower, CANNOT_FOLLOW_SELF)
+  #   end
+  # end
   
 end
