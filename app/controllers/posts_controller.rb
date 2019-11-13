@@ -42,9 +42,6 @@ class PostsController < ApplicationController
     @user = get_current_user()
     @post = get_post_from_params()
     params[:user_id] = @user.id
-    if Like.find_by(user_id: @user.id, post_id: @post.id)
-      raise SupagramErrors::PostAlreadyLiked
-    end
     @like = Like.create(like_params())
     respond_to_like()
   end
@@ -58,7 +55,7 @@ class PostsController < ApplicationController
       post_serializer = PostSerializer.new(post: @post, user: @user)
       render json: post_serializer.serialize_likes()
     else
-      render json: { errors: like.errors }, status: 400
+      render json: { errors: @like.errors }, status: 400
     end
   end
 
