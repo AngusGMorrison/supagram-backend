@@ -4,28 +4,17 @@ class PostsController < ApplicationController
     rescue_from SupagramErrors::PostNotFound do |error|
       render json: { errors: error.message }, status: error.http_status
     end
+
+    rescue_from SupagramErrors::PostAlreadyLiked do |error|
+      render json: { errors: error.message }, status: error.http_status
+    end
   end
 
   def show_feed
     @user = get_current_user()
-    feed = get_feed()
+    feed = @user.get_feed(get_feed_start_datetime())
     post_serializer = PostSerializer.new(feed: feed, user: @user)
     render json: post_serializer.serialize_feed_with_user(), status: 200
-  end
-
-  private def get_feed
-    @user.followed_posts
-      .where("posts.created_at < ?", get_feed_start_date())
-      .order(created_at: :desc)
-      .limit(25)
-  end
-
-  private def get_feed_start_date
-    if params[:earliest_date_in_feed]
-      params[:earliest_date_in_feed]
-    else
-      DateTime.now()
-    end
   end
 
   def create
@@ -53,7 +42,9 @@ class PostsController < ApplicationController
     @user = get_current_user()
     @post = get_post_from_params()
     params[:user_id] = @user.id
-
+    if Like.find_by(user_id: @user.id, post_id: @post.id)
+      raise SupagramErrors::PostAlreadyLiked
+    end
     @like = Like.create(like_params())
     respond_to_like()
   end

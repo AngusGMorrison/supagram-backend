@@ -81,4 +81,18 @@ class User < ApplicationRecord
     self.followers.include?(user)
   end
 
+  def get_feed(start_datetime)
+    self.followed_posts
+      .where("posts.created_at < ?", start_datetime)
+      .order(created_at: :desc)
+      .limit(25)
+  end
+
+  def get_profile_posts(start_datetime)
+    self.posts
+      .where("posts.created_at < ?", start_datetime)
+      .order(created_at: :desc)
+      .limit(25)
+  end
+
 end
