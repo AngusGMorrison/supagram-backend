@@ -28,18 +28,30 @@ class UsersController < ApplicationController
     render json: user_serializer.serialize_with_token(token)
   end
 
-  def change_avatar
+  def show
     user = get_current_user()
-    change_avatar()
-    render json: user_serializer.s
-  end
-
-  private def change_avatar
-    begin
-      user.avatar = params[:avatar]
-    rescue
-      raise SupgramErrors::AvatarUploadError
+    profile_user = User.find_by(username: params[:username])
+    if profile_user
+      profile_posts = profile_user.get_profile_posts(get_feed_start_datetime())
+      post_serializer = PostSerializer.new(feed: profile_posts, user: user)
+      render json: post_serializer.serialize_profile(profile_user), status: 200
+    else
+      render json: { errors: "Profile not found" }, status: 404
     end
   end
+
+  # def change_avatar
+  #   user = get_current_user()
+  #   change_avatar()
+  #   render json: user_serializer.s
+  # end
+
+  # private def change_avatar
+  #   begin
+  #     user.avatar = params[:avatar]
+  #   rescue
+  #     raise SupgramErrors::AvatarUploadError
+  #   end
+  # end
 
 end

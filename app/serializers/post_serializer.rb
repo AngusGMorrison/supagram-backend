@@ -25,7 +25,7 @@ class PostSerializer
 
   private def get_serialized_user_details
     user_serializer = UserSerializer.new(@user)
-    user_serializer.serialize()
+    user_serializer.serialize_user()
   end
 
   private def serialize_post(post)
@@ -55,6 +55,14 @@ class PostSerializer
         liked_by_current_user: @post.liked_by?(@user)
       }
     }.to_json()
+  end
+
+  def serialize_profile(profile_owner)
+    user_serializer = UserSerializer.new(profile_owner)
+    serialized_profile_owner = user_serializer.serialize_profile_owner()
+    serialized_profile_feed = serialize_feed()
+    serialized_profile_feed_with_owner = serialized_profile_feed.merge(serialized_profile_owner)
+    serialized_profile_feed_with_owner.to_json()
   end
 
 end

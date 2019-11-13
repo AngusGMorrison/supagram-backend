@@ -6,7 +6,7 @@ class UserSerializer
   end
 
   def serialize_with_token(token)
-    serialized_user = serialize().merge({ token: token })
+    serialized_user = serialize_user().merge({ token: token })
     serialized_user.to_json()
   end
 
@@ -15,7 +15,7 @@ class UserSerializer
   # Does serialization imply a conversion to JSON or is it purely the structure of the hash thast matters?
 
 
-  def serialize()
+  def serialize_user
     {
       user: {
         username: @user.username,
@@ -27,7 +27,11 @@ class UserSerializer
     }
   end
 
-  private def get_avatar_url()
+  def serialize_profile_owner
+    { profile_owner: serialize_user()[:user] }
+  end
+
+  private def get_avatar_url
     url_for(@user.avatar)
   end
 

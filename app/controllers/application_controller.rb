@@ -32,4 +32,12 @@ class ApplicationController < ActionController::API
     ENV["SUPAGRAM_JWT_KEY"]
   end
 
+  private def get_feed_start_datetime
+    if params[:earliest_date_in_feed]
+      params[:earliest_date_in_feed]
+    else
+      DateTime.now()
+    end
+  end 
+
 end
