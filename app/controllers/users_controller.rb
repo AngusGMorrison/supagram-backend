@@ -24,8 +24,22 @@ class UsersController < ApplicationController
 
   private def respond_with_token_and_user()
     token = issue_token({ user_id: @user.id })
-    user_serializer = UserSerializer.new(@user, token)
-    render json: user_serializer.serialize()
+    user_serializer = UserSerializer.new(@user)
+    render json: user_serializer.serialize_with_token(token)
+  end
+
+  def change_avatar
+    user = get_current_user()
+    change_avatar()
+    render json: user_serializer.s
+  end
+
+  private def change_avatar
+    begin
+      user.avatar = params[:avatar]
+    rescue
+      raise SupgramErrors::AvatarUploadError
+    end
   end
 
 end

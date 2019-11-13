@@ -10,7 +10,7 @@ class PostsController < ApplicationController
     @user = get_current_user()
     feed = get_feed()
     post_serializer = PostSerializer.new(feed: feed, user: @user)
-    render json: post_serializer.serialize_feed(), status: 200
+    render json: post_serializer.serialize_feed_with_user(), status: 200
   end
 
   private def get_feed

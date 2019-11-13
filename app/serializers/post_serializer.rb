@@ -1,34 +1,38 @@
 class PostSerializer
-  include Rails.application.routes.url_helpers
 
-  def initialize(feed: [], post: nil, user: user)
+  def initialize(feed: [], post: nil, user:)
     @feed = feed
     @post = post
     @user = user
   end
 
-  def serialize_new_post()
-    user_details = {
-      user: {
-        post_count: @user.get_post_count()
-      }
-    }
+  def serialize_new_post
+    user_details = get_serialized_user_details()
     serialized_new_post = serialize_post(@post).merge(user_details)
     serialized_new_post.to_json()
   end
 
-  def serialize_feed
-    serialized_feed = @feed.map() do |post|
-      serialize_post(post)
-    end
-    serialized_feed.to_json()
+  def serialize_feed_with_user
+    serialized_feed_with_user = serialize_feed().merge(get_serialized_user_details())
+    serialized_feed_with_user.to_json()
+  end
+
+  private def serialize_feed
+    {
+      feed: @feed.map() { |post| serialize_post(post) }
+    } 
+  end
+
+  private def get_serialized_user_details
+    user_serializer = UserSerializer.new(@user)
+    user_serializer.serialize()
   end
 
   private def serialize_post(post)
     {
       post: {
         id: post.id,
-        image_url: post.get_image_url,
+        image_url: post.get_image_url(),
         caption: post.caption,
         most_recent_likes: post.get_most_recent_likes(),
         like_count: post.likes.length,
