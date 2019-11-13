@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include Rails.application.routes.url_helpers
   include ValidationRegexps
   include ValidationErrorMessages
 
@@ -63,6 +64,10 @@ class User < ApplicationRecord
 
   private def follow_self
     Follow.create(follower_id: self.id, followed_id: self.id)
+  end
+
+  def get_avatar_url
+    url_for(self.avatar)
   end
 
   def get_post_count
