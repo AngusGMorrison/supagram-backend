@@ -9,6 +9,10 @@ class UserSerializer
     serialize_user().merge({ token: token })
   end
 
+  def serialize_profile_owner
+    { profile_owner: serialize_user()[:user] }
+  end
+
   def serialize_user
     {
       user: {
@@ -19,10 +23,6 @@ class UserSerializer
         followed_count: @user.get_followed_count()
       }
     }
-  end
-
-  def serialize_profile_owner
-    { profile_owner: serialize_user()[:user] }
   end
 
   private def get_avatar_url
