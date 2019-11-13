@@ -50,7 +50,7 @@ class PostSerializer
   def serialize_likes()
     {
       post: {
-        id: @post_id,
+        id: @post.id,
         like_count: @post.likes.length,
         liked_by_current_user: @post.liked_by?(@user)
       }

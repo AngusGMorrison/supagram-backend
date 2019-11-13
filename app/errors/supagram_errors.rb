@@ -20,6 +20,16 @@ module SupagramErrors
     end
   end
 
+  class PostAlreadyLiked < StandardError
+    def message
+      "User has already liked this post"
+    end
+
+    def http_status
+      400
+    end
+  end
+
   class UnfollowSelf < StandardError
     def message
       "User cannot unfollow themselves"

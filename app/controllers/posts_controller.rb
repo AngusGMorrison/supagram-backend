@@ -4,6 +4,10 @@ class PostsController < ApplicationController
     rescue_from SupagramErrors::PostNotFound do |error|
       render json: { errors: error.message }, status: error.http_status
     end
+
+    rescue_from SupagramErrors::PostAlreadyLiked do |error|
+      render json: { errors: error.message }, status: error.http_status
+    end
   end
 
   def show_feed
@@ -12,13 +16,6 @@ class PostsController < ApplicationController
     post_serializer = PostSerializer.new(feed: feed, user: @user)
     render json: post_serializer.serialize_feed_with_user(), status: 200
   end
-
-  # private def get_feed
-  #   @user.followed_posts
-  #     .where("posts.created_at < ?", get_feed_start_date())
-  #     .order(created_at: :desc)
-  #     .limit(25)
-  # end
 
   def create
     @user = get_current_user()
@@ -45,8 +42,9 @@ class PostsController < ApplicationController
     @user = get_current_user()
     @post = get_post_from_params()
     params[:user_id] = @user.id
-
-    # Infinite loop occurs if user has already liked post. Fix.
+    if Like.find_by(user_id: @user.id, post_id: @post.id)
+      raise SupagramErrors::PostAlreadyLiked
+    end
     @like = Like.create(like_params())
     respond_to_like()
   end
