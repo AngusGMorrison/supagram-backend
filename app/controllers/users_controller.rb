@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   def sign_in
     @user = User.find_by(email: params[:email])
     if @user && @user.authenticate(params[:password])
-      respond_with_token_and_user()
+      respond_with_user_and_auth_token()
     else
       render json: { errors: "Invalid username or password" }, status: 401
     end
@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   def sign_up
     @user = User.create(user_params())
     if @user.valid?()
-      respond_with_token_and_user()
+      respond_with_user_and_auth_token()
     else
       render json: { errors: @user.errors }, status: 400
     end
@@ -22,10 +22,11 @@ class UsersController < ApplicationController
       params.require(:user).permit(:name, :username, :email, :password)
   end
 
-  private def respond_with_token_and_user()
+  private def respond_with_user_and_auth_token()
+    serializer = UserSerializer.new(@user)
     token = issue_token({ user_id: @user.id })
-    user_serializer = UserSerializer.new(@user)
-    render json: user_serializer.serialize_with_token(token)
+    response = serializer.serialize_with_auth_token(token)
+    render json: response.to_json(), status: 200
   end
 
   def show

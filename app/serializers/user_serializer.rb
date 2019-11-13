@@ -5,15 +5,9 @@ class UserSerializer
     @user = user
   end
 
-  def serialize_with_token(token)
-    serialized_user = serialize_user().merge({ token: token })
-    serialized_user.to_json()
+  def serialize_with_auth_token(token)
+    serialize_user().merge({ token: token })
   end
-
-
-  # Sort issue of when to convert to JSON and how to name serialization methods
-  # Does serialization imply a conversion to JSON or is it purely the structure of the hash thast matters?
-
 
   def serialize_user
     {
