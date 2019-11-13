@@ -93,7 +93,7 @@ class User < ApplicationRecord
       .limit(25)
   end
 
-  def get_profile_posts(start_datetime)
+  def get_profile_feed(start_datetime)
     self.posts
       .where("posts.created_at < ?", start_datetime)
       .order(created_at: :desc)

@@ -1,11 +1,12 @@
 class UsersController < ApplicationController
+  include ControllerErrorMessages
 
   def sign_in
     @user = User.find_by(email: params[:email])
     if @user && @user.authenticate(params[:password])
       respond_with_user_and_auth_token()
     else
-      render json: { errors: "Invalid username or password" }, status: 401
+      render json: { errors: AUTHENTICATION_FAILED }, status: 401
     end
   end
 
@@ -30,15 +31,20 @@ class UsersController < ApplicationController
   end
 
   def show
-    user = get_current_user()
-    profile_user = User.find_by(username: params[:username])
-    if profile_user
-      profile_posts = profile_user.get_profile_posts(get_feed_start_datetime())
-      post_serializer = PostSerializer.new(feed: profile_posts, user: user)
-      render json: post_serializer.serialize_profile(profile_user), status: 200
+    @user = get_current_user()
+    @profile_owner = User.find_by(username: params[:username])
+    if @profile_owner
+      respond_with_profile_feed()
     else
       render json: { errors: "Profile not found" }, status: 404
     end
+  end
+
+  private def respond_with_profile_feed()
+    profile_feed = @profile_owner.get_profile_feed(get_feed_start_datetime())
+    post_serializer = PostSerializer.new(feed: profile_feed, user: @user)
+    serialized_profile_feed = post_serializer.serialize_profile_feed(profile_owner)
+    render json: serialized_profile_feed, status: 200
   end
 
   # def change_avatar
