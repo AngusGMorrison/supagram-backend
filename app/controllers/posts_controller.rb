@@ -1,5 +1,6 @@
 class PostsController < ApplicationController
 
+  #Refactor into master error controller?
   unless Rails.env.development?()
     rescue_from SupagramErrors::PostNotFound do |error|
       respond_to_error(error)
