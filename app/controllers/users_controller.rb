@@ -48,18 +48,4 @@ class UsersController < ApplicationController
     render json: response, status: 200
   end
 
-  # def change_avatar
-  #   user = get_current_user()
-  #   change_avatar()
-  #   render json: user_serializer.s
-  # end
-
-  # private def change_avatar
-  #   begin
-  #     user.avatar = params[:avatar]
-  #   rescue
-  #     raise SupgramErrors::AvatarUploadError
-  #   end
-  # end
-
 end
