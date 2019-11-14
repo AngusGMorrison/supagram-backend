@@ -95,4 +95,8 @@ class User < ApplicationRecord
       .limit(25)
   end
 
+  def get_avatar_url
+    url_for(self.avatar)
+  end
+
 end
