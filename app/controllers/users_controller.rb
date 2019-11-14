@@ -36,14 +36,15 @@ class UsersController < ApplicationController
     if @profile_owner
       respond_with_profile_feed()
     else
-      render json: { errors: "Profile not found" }, status: 404
+      render json: { errors: PROFILE_NOT_FOUND }, status: 404
     end
   end
 
   private def respond_with_profile_feed()
-    profile = @profile_owner.get_profile_feed(get_feed_start_datetime())
-    serializer = ProfileSerializer.new(profile: profile, profile_owner: @profile_owner, current_user: @user)
-    response = serializer.serialize_as_json()
+    feed_start = get_feed_start_datetime()
+    profile = @profile_owner.get_profile_feed(feed_start)
+    profile_serializer = ProfileSerializer.new(profile: profile, profile_owner: @profile_owner, current_user: @user)
+    response = profile_serializer.serialize_as_json()
     render json: response, status: 200
   end
 
