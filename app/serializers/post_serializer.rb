@@ -6,24 +6,21 @@ class PostSerializer
     @serialized_user = UserSerializer.new(user: user).serialize()
   end
 
-  def serialize_as_json
-    serialize().to_json()
-  end
-  
-  def serialize
-    { posts: serialize_each_post() }
-  end
-  
   def serialize_with_user_as_json
     serialize_with_user.to_json()
   end
 
   def serialize_with_user
+    serialize().merge({ user: @serialized_user })
+  end
+
+  def serialize_as_json
+    serialize().to_json()
+  end
+  
+  def serialize
     posts_key = get_posts_key()
-    {
-      posts_key => serialize_each_post(),
-      :user => @serialized_user
-    }
+    { posts_key => serialize_each_post() }
   end
 
   private def get_posts_key
