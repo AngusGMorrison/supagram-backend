@@ -2,6 +2,7 @@ class PostSerializer
 
   def initialize(posts:, user:)
     @posts = posts
+    @user = user
     @serialized_user = UserSerializer.new(user: user).serialize()
   end
 
@@ -18,18 +19,27 @@ class PostSerializer
   end
 
   def serialize_with_user
+    posts_key = get_posts_key()
     {
-      posts: serialize_each_post(),
-      user: @serialized_user
+      posts_key => serialize_each_post(),
+      :user => @serialized_user
     }
   end
 
+  private def get_posts_key
+    is_feed?() ? :posts : :post
+  end
+
   private def serialize_each_post
-    if @posts.is_a?(ActiveRecord::AssociationRelation)
+    if is_feed?()
       @posts.map() { |post| serialize_post(post) }
     else
       serialize_post(@posts)
     end
+  end
+
+  private def is_feed?
+    @posts.is_a?(ActiveRecord::AssociationRelation)
   end
 
   private def serialize_post(post)
