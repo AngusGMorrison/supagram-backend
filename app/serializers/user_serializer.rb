@@ -1,18 +1,17 @@
 class UserSerializer
 
-  def initialize(user:, token: nil)
+  def initialize(user:)
     @user = user
-    @token = token
   end
 
-  def serialize_with_auth_token_as_json
-    serialize_with_auth_token.to_json()
+  def serialize_with_auth_token_as_json(token)
+    serialize_with_auth_token(token).to_json()
   end
 
-  private def serialize_with_auth_token
+  private def serialize_with_auth_token(token)
     { 
       user: serialize(),
-      token: @token
+      token: token
     }
   end
 

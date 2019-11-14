@@ -51,6 +51,7 @@ class PostSerializer
       author: {
         id: post.user.id,
         username: post.user.username,
+        avatar: post.user.get_avatar_url(),
         followed_by_current_user: post.user.followed_by?(@user)
       }
     }
