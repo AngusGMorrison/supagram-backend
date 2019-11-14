@@ -24,10 +24,10 @@ class UsersController < ApplicationController
   end
 
   private def respond_with_user_and_auth_token()
-    serializer = UserSerializer.new(@user)
     token = issue_token({ user_id: @user.id })
-    response = serializer.serialize_with_auth_token(token)
-    render json: response.to_json(), status: 200
+    serializer = UserSerializer.new(user: @user, token: token)
+    response = serializer.serialize_with_auth_token_as_json()
+    render json: response, status: 200
   end
 
   def show
@@ -41,10 +41,10 @@ class UsersController < ApplicationController
   end
 
   private def respond_with_profile_feed()
-    profile_feed = @profile_owner.get_profile_feed(get_feed_start_datetime())
-    post_serializer = PostSerializer.new(feed: profile_feed, user: @user)
-    serialized_profile_feed = post_serializer.serialize_profile_feed(profile_owner)
-    render json: serialized_profile_feed, status: 200
+    profile = @profile_owner.get_profile_feed(get_feed_start_datetime())
+    serializer = ProfileSerializer.new(profile: profile, profile_owner: @profile_owner, current_user: @user)
+    response = serializer.serialize_as_json()
+    render json: response, status: 200
   end
 
   # def change_avatar

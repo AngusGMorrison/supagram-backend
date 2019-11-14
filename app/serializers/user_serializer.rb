@@ -1,18 +1,23 @@
 class UserSerializer
 
-  def initialize(user)
+  def initialize(user:, token: nil)
     @user = user
+    @token = token
   end
 
-  def serialize_with_auth_token(token)
-    serialize_user().merge({ token: token })
+  def serialize_with_auth_token_as_json
+    serialize_with_auth_token.to_json()
+  end
+
+  private def serialize_with_auth_token
+    serialize().merge({ token: @token }) 
   end
 
   def serialize_profile_owner
-    { profile_owner: serialize_user()[:user] }
+    { profile_owner: serialize()[:user] }
   end
 
-  def serialize_user
+  def serialize
     {
       user: {
         username: @user.username,

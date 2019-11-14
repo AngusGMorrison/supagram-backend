@@ -12,9 +12,10 @@ class PostsController < ApplicationController
 
   def show_feed
     @user = get_current_user()
-    feed = @user.get_feed(get_feed_start_datetime())
-    post_serializer = PostSerializer.new(feed: feed, user: @user)
-    render json: post_serializer.serialize_feed_with_user(), status: 200
+    feed = @user.get_followed_feed(get_feed_start_datetime())
+    serializer = FeedSerializer.new(feed: feed, current_user: @user)
+    response = serializer.serialize_as_json()
+    render json: response, status: 200
   end
 
   def create
@@ -31,8 +32,9 @@ class PostsController < ApplicationController
 
   private def respond_to_post()
     if @post.valid?()
-      post_serializer = PostSerializer.new(post: @post, user: @user)
-      render json: post_serializer.serialize_new_post()
+      post_serializer = PostSerializer.new(posts: @post, user: @user)
+      response = post_serializer.serialize_new_post_as_json()
+      render json: response, status: 200
     else
       render json: { errors: post.errors }, status: 400
     end
@@ -52,7 +54,7 @@ class PostsController < ApplicationController
 
   private def respond_to_like()
     if @like.valid?()
-      post_serializer = PostSerializer.new(post: @post, user: @user)
+      post_serializer = PostSerializer.new(posts: @post, user: @user)
       render json: post_serializer.serialize_likes()
     else
       render json: { errors: @like.errors }, status: 400

@@ -1,31 +1,25 @@
 class PostSerializer
 
-  def initialize(feed: [], post: nil, user:)
-    @feed = feed
-    @post = post
-    @user = user
+  def initialize(posts:, user:)
+    @posts = posts
+    @serialized_user = UserSerializer.new(user: user).serialize()
   end
 
-  def serialize_new_post
-    user_details = get_serialized_user_details()
-    serialized_new_post = serialize_post(@post).merge(user_details)
-    serialized_new_post.to_json()
+  def serialize_new_post_as_json
+    serialize_new_post.to_json()
   end
 
-  def serialize_feed_with_user
-    serialized_feed_with_user = serialize_feed().merge(get_serialized_user_details())
-    serialized_feed_with_user.to_json()
+  private def serialize_new_post
+    serialized_post = serialize_posts()
+    serialized_post.merge(@serialized_user)
   end
 
-  private def serialize_feed
-    {
-      feed: @feed.map() { |post| serialize_post(post) }
-    } 
-  end
-
-  private def get_serialized_user_details
-    user_serializer = UserSerializer.new(@user)
-    user_serializer.serialize_user()
+  def serialize_posts
+    if @posts.is_a?(ActiveRecord::AssociationRelation)
+      @posts.map() { |post| serialize_post(post) }
+    else
+      serialize_post(@posts)
+    end
   end
 
   private def serialize_post(post)
@@ -50,19 +44,11 @@ class PostSerializer
   def serialize_likes()
     {
       post: {
-        id: @post.id,
-        like_count: @post.likes.length,
-        liked_by_current_user: @post.liked_by?(@user)
+        id: @posts.id,
+        like_count: @posts.likes.length,
+        liked_by_current_user: @posts.liked_by?(@user)
       }
     }.to_json()
-  end
-
-  def serialize_profile(profile_owner)
-    user_serializer = UserSerializer.new(profile_owner)
-    serialized_profile_owner = user_serializer.serialize_profile_owner()
-    serialized_profile_feed = serialize_feed()
-    serialized_profile_feed_with_owner = serialized_profile_feed.merge(serialized_profile_owner)
-    serialized_profile_feed_with_owner.to_json()
   end
 
 end
