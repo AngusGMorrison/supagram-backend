@@ -25,8 +25,8 @@ class UsersController < ApplicationController
 
   private def respond_with_user_and_auth_token()
     token = issue_token({ user_id: @user.id })
-    serializer = UserSerializer.new(user: @user)
-    response = serializer.serialize_with_auth_token_as_json(token)
+    user_serializer = UserSerializer.new(user: @user)
+    response = user_serializer.serialize_with_auth_token_as_json(token)
     render json: response, status: 200
   end
 
