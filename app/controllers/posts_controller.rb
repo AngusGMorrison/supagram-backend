@@ -13,8 +13,8 @@ class PostsController < ApplicationController
   def show_feed
     @user = get_current_user()
     feed = @user.get_followed_feed(get_feed_start_datetime())
-    serializer = FeedSerializer.new(feed: feed, current_user: @user)
-    response = serializer.serialize_as_json()
+    serializer = PostSerializer.new(posts: feed, user: @user)
+    response = serializer.serialize_with_user_as_json()
     render json: response, status: 200
   end
 
@@ -33,7 +33,7 @@ class PostsController < ApplicationController
   private def respond_to_post()
     if @post.valid?()
       post_serializer = PostSerializer.new(posts: @post, user: @user)
-      response = post_serializer.serialize_new_post_as_json()
+      response = post_serializer.serialize_with_user_as_json()
       render json: response, status: 200
     else
       render json: { errors: post.errors }, status: 400
@@ -45,28 +45,15 @@ class PostsController < ApplicationController
     @post = get_post_from_params()
     params[:user_id] = @user.id
     @like = Like.create(like_params())
-    respond_to_like()
-  end
-
-  private def like_params
-    params.permit(:user_id, :post_id)
-  end
-
-  private def respond_to_like()
-    if @like.valid?()
-      post_serializer = PostSerializer.new(posts: @post, user: @user)
-      render json: post_serializer.serialize_likes()
-    else
-      render json: { errors: @like.errors }, status: 400
-    end
+    respond_to_like_toggle()
   end
 
   def unlike
     @user = get_current_user()
     @post = get_post_from_params()
-    like = Like.find_by(user_id: @user.id, post_id: @post.id)
-    like.destroy()
-    respond_to_unlike()
+    @like = Like.find_by(user_id: @user.id, post_id: @post.id)
+    @like.destroy()
+    respond_to_like_toggle()
   end
 
   private def get_post_from_params
@@ -77,9 +64,18 @@ class PostsController < ApplicationController
     end
   end
 
-  private def respond_to_unlike()
-    post_serializer = PostSerializer.new(post: @post, user: @user)
-    render json: post_serializer.serialize_likes()
+  private def like_params
+    params.permit(:user_id, :post_id)
+  end
+
+  private def respond_to_like_toggle()
+    if @like.valid?()
+      post_serializer = PostSerializer.new(posts: @post, user: @user)
+      response = post_serializer.serialize_as_json()
+      render json: response
+    else
+      render json: { errors: @like.errors }, status: 400
+    end
   end
 
 end
