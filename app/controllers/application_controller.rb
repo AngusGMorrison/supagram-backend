@@ -40,4 +40,8 @@ class ApplicationController < ActionController::API
     end
   end 
 
+  private def respond_to_error(error)
+    render json: { errors: error.message }, status: error.http_status
+  end
+
 end

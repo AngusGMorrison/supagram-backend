@@ -2,18 +2,17 @@ class PostsController < ApplicationController
 
   unless Rails.env.development?()
     rescue_from SupagramErrors::PostNotFound do |error|
-      render json: { errors: error.message }, status: error.http_status
+      respond_to_error(error)
     end
 
     rescue_from SupagramErrors::PostAlreadyLiked do |error|
-      render json: { errors: error.message }, status: error.http_status
+      respond_to_error(error)
     end
 
     rescue_from SupagramErrors::LikeNotFound do |error|
-      render json: { errors: error.message }, status: error.http_status
+      respond_to_error(error)
     end
   end
-
 
   def show_feed
     @user = get_current_user()
