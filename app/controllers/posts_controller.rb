@@ -12,7 +12,8 @@ class PostsController < ApplicationController
 
   def show_feed
     @user = get_current_user()
-    feed = @user.get_followed_feed(get_feed_start_datetime())
+    start_datetime = get_feed_start_datetime()
+    feed = @user.get_followed_feed(start_datetime)
     serializer = PostSerializer.new(posts: feed, user: @user)
     response = serializer.serialize_with_user_as_json()
     render json: response, status: 200
