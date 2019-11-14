@@ -8,7 +8,12 @@ class PostsController < ApplicationController
     rescue_from SupagramErrors::PostAlreadyLiked do |error|
       render json: { errors: error.message }, status: error.http_status
     end
+
+    rescue_from SupagramErrors::LikeNotFound do |error|
+      render json: { errors: error.message }, status: error.http_status
+    end
   end
+
 
   def show_feed
     @user = get_current_user()
@@ -22,11 +27,11 @@ class PostsController < ApplicationController
   def create
     @user = get_current_user()
     params[:user_id] = @user.id
-
     @post = Post.create(post_params())
     respond_to_post()
   end
 
+  #Can FormData be set as the value of a "post" key?
   private def post_params
     params.permit(:user_id, :caption, :image)
   end
@@ -53,6 +58,7 @@ class PostsController < ApplicationController
     @user = get_current_user()
     @post = get_post_from_params()
     @like = Like.find_by(user_id: @user.id, post_id: @post.id)
+    if !@like raise SupagramErrors::LikeNotFound
     @like.destroy()
     respond_to_like_toggle()
   end
