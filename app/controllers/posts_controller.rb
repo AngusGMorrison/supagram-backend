@@ -58,6 +58,7 @@ class PostsController < ApplicationController
     @user = get_current_user()
     @post = get_post_from_params()
     @like = Like.find_by(user_id: @user.id, post_id: @post.id)
+    # Is it better to raise the error with an if, or rescue the error when it occurs?
     if !@like raise SupagramErrors::LikeNotFound
     @like.destroy()
     respond_to_like_toggle()
