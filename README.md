@@ -7,3 +7,4 @@ A Rails API backend with Cloudinary integration for an elegant photo sharing app
 * Cloudinary integration for photo storage and processing
 * Custom error handling
 * Example RSpec tests for models and controllers
+* Custom serializers ensure that only essential data is returned with each response
