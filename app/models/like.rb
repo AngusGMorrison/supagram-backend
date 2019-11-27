@@ -10,5 +10,5 @@ class Like < ApplicationRecord
       message: ALREADY_LIKED
     }
   }
-  
+
 end

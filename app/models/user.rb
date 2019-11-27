@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include Rails.application.routes.url_helpers
   include ValidationRegexps
   include ValidationErrorMessages
 
@@ -65,6 +66,10 @@ class User < ApplicationRecord
     Follow.create(follower_id: self.id, followed_id: self.id)
   end
 
+  def get_avatar_url
+    url_for(self.avatar)
+  end
+
   def get_post_count
     self.posts.length
   end
@@ -81,14 +86,14 @@ class User < ApplicationRecord
     self.followers.include?(user)
   end
 
-  def get_feed(start_datetime)
+  def get_followed_feed(start_datetime)
     self.followed_posts
       .where("posts.created_at < ?", start_datetime)
       .order(created_at: :desc)
       .limit(25)
   end
 
-  def get_profile_posts(start_datetime)
+  def get_profile_feed(start_datetime)
     self.posts
       .where("posts.created_at < ?", start_datetime)
       .order(created_at: :desc)

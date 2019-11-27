@@ -20,6 +20,16 @@ module SupagramErrors
     end
   end
 
+  class LikeNotFound < ActiveRecord::RecordNotFound
+    def message
+      "User hasn't liked this post"
+    end
+
+    def http_status
+      400
+    end
+  end
+
   class PostAlreadyLiked < StandardError
     def message
       "User has already liked this post"
