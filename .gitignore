@@ -21,3 +21,7 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 /config/cloudinary.yml
+
+# Ignore .DS_Store
+.DS_Store
+*/.DS_Store
