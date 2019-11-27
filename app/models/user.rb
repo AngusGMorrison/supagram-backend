@@ -1,5 +1,4 @@
 class User < ApplicationRecord
-  include Rails.application.routes.url_helpers
   include ValidationRegexps
   include ValidationErrorMessages
 
