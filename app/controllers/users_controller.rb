@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
   private def respond_with_profile_feed()
     start_datetime = get_feed_start_datetime()
-    profile = @profile_owner.get_profile_feed(start_dateime)
+    profile = @profile_owner.get_profile_feed(start_datetime)
     profile_serializer = ProfileSerializer.new(profile: profile, profile_owner: @profile_owner, current_user: @user)
     response = profile_serializer.serialize_as_json()
     render json: response, status: 200
